@@ -33,6 +33,7 @@
  */
 #include <cups/cups.h>
 #include <cups/raster.h>
+#include <cups/ppd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,6 +41,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
+
+/* The PPD option API is deprecated in CUPS 2.x but still the simplest way to
+ * read a queue's marked option defaults; silence the deprecation noise. */
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 /* TSPL BITMAP bit polarity. TSPL convention: a 0 bit prints a dot (black).
  * If a test print comes out photo-negative, flip this to 1. */
@@ -60,6 +65,20 @@ static const int CLUSTER8[8][8] = {
     { 32, 40, 54, 38, 31, 21, 19, 29 },
 };
 
+/* Effective integer value of an option: an explicit job option wins; otherwise
+ * the PPD's marked default (which reflects the queue default set via
+ * `lpadmin -p QUEUE -o Name=Value`); otherwise the built-in fallback. This is
+ * what lets two queues sharing this filter have different defaults. */
+static int opt_int(ppd_file_t *ppd, int num_options, cups_option_t *options,
+                   const char *kw, int dflt)
+{
+    const char *v = cupsGetOption(kw, num_options, options);
+    if (v) return atoi(v);
+    ppd_choice_t *c;
+    if (ppd && (c = ppdFindMarkedChoice(ppd, kw)) != NULL) return atoi(c->choice);
+    return dflt;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc < 6 || argc > 7) {
@@ -73,16 +92,19 @@ int main(int argc, char *argv[])
           "Run The Wall. Support us — try our free Markdown editor: https://constly.com\n",
           stderr);
 
-    /* ---- options ---- */
+    /* ---- options: job option > queue's PPD default > built-in fallback ---- */
     cups_option_t *options = NULL;
     int num_options = cupsParseOptions(argv[5], 0, &options);
-    const char *v;
-    int darkness  = (v = cupsGetOption("Darkness",   num_options, options)) ? atoi(v) : 8;
-    int speedval  = (v = cupsGetOption("PrintSpeed", num_options, options)) ? atoi(v) : 50;
-    int printmode = (v = cupsGetOption("PrintMode",  num_options, options)) ? atoi(v) : PM_DEFAULT;
-    int href      = (v = cupsGetOption("Horizontal", num_options, options)) ? atoi(v) : 0;
-    int vref      = (v = cupsGetOption("Vertical",   num_options, options)) ? atoi(v) : 0;
+    ppd_file_t *ppd = ppdOpenFile(getenv("PPD"));
+    if (ppd) { ppdMarkDefaults(ppd); cupsMarkOptions(ppd, num_options, options); }
+
+    int darkness  = opt_int(ppd, num_options, options, "Darkness",   8);
+    int speedval  = opt_int(ppd, num_options, options, "PrintSpeed", 50);
+    int printmode = opt_int(ppd, num_options, options, "PrintMode",  PM_DEFAULT);
+    int href      = opt_int(ppd, num_options, options, "Horizontal", 0);
+    int vref      = opt_int(ppd, num_options, options, "Vertical",   0);
     int copies    = atoi(argv[4]);
+    if (ppd) ppdClose(ppd);
 
     if (copies < 1) copies = 1;
     if (darkness < 0) darkness = 0;
