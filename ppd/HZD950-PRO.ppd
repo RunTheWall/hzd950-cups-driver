@@ -1,0 +1,131 @@
+*PPD-Adobe: "4.3"
+*% =========================================================================
+*%  HZD950-PRO / HERO 4x6 TSPL thermal label printer — CUPS PPD
+*%  Part of the free RTW driver. Support us: https://constly.com
+*%  SPDX-License-Identifier: MIT
+*% =========================================================================
+*FormatVersion: "4.3"
+*FileVersion: "1.0"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName: "HZD950.PPD"
+*Manufacturer: "RunTheWall"
+*Product: "(HZD950-PRO)"
+*cupsVersion: 2.4
+*cupsModelNumber: 20
+*cupsManualCopies: True
+*cupsFilter: "application/vnd.cups-raster 0 rastertohzd"
+*ModelName: "HZD950-PRO TSPL Label"
+*ShortNickName: "HZD950-PRO RTW"
+*NickName: "HZD950-PRO / HERO 4x6 TSPL Label (RTW free driver)"
+*PSVersion: "(3010.000) 0"
+*LanguageLevel: "3"
+*ColorDevice: False
+*DefaultColorSpace: Gray
+*FileSystem: False
+*Throughput: "4"
+*LandscapeOrientation: Plus90
+*TTRasterizer: Type42
+*VariablePaperSize: True
+
+*OpenUI *Resolution/Resolution: PickOne
+*OrderDependency: 30 AnySetup *Resolution
+*DefaultResolution: 300dpi
+*Resolution 300dpi/300 dpi: "<</HWResolution[300 300]/cupsBitsPerColor 8/cupsColorSpace 0/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*CloseUI: *Resolution
+
+*OpenUI *PageSize/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: w288h432
+*PageSize w288h432/4 x 6 in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize w283h425/100 x 150 mm: "<</PageSize[283 425]/ImagingBBox null>>setpagedevice"
+*PageSize w288h288/4 x 4 in: "<</PageSize[288 288]/ImagingBBox null>>setpagedevice"
+*PageSize w162h108/2.25 x 1.5 in: "<</PageSize[162 108]/ImagingBBox null>>setpagedevice"
+*PageSize w144h72/2 x 1 in: "<</PageSize[144 72]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+
+*OpenUI *PageRegion/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: w288h432
+*PageRegion w288h432/4 x 6 in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion w283h425/100 x 150 mm: "<</PageSize[283 425]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h288/4 x 4 in: "<</PageSize[288 288]/ImagingBBox null>>setpagedevice"
+*PageRegion w162h108/2.25 x 1.5 in: "<</PageSize[162 108]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h72/2 x 1 in: "<</PageSize[144 72]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+
+*DefaultImageableArea: w288h432
+*ImageableArea w288h432/4 x 6 in: "0 0 288 432"
+*ImageableArea w283h425/100 x 150 mm: "0 0 283 425"
+*ImageableArea w288h288/4 x 4 in: "0 0 288 288"
+*ImageableArea w162h108/2.25 x 1.5 in: "0 0 162 108"
+*ImageableArea w144h72/2 x 1 in: "0 0 144 72"
+
+*DefaultPaperDimension: w288h432
+*PaperDimension w288h432/4 x 6 in: "288 432"
+*PaperDimension w283h425/100 x 150 mm: "283 425"
+*PaperDimension w288h288/4 x 4 in: "288 288"
+*PaperDimension w162h108/2.25 x 1.5 in: "162 108"
+*PaperDimension w144h72/2 x 1 in: "144 72"
+
+*HWMargins: 0 0 0 0
+*MaxMediaWidth: "324"
+*MaxMediaHeight: "3240"
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 36 324
+*ParamCustomPageSize Height: 2 points 36 3240
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
+
+*OpenUI *PrintSpeed/Print Speed: PickOne
+*OrderDependency: 40 AnySetup *PrintSpeed
+*DefaultPrintSpeed: 50
+*PrintSpeed 20/2 in/sec: ""
+*PrintSpeed 30/3 in/sec: ""
+*PrintSpeed 40/4 in/sec: ""
+*PrintSpeed 50/5 in/sec: ""
+*PrintSpeed 60/6 in/sec: ""
+*CloseUI: *PrintSpeed
+
+*OpenUI *Darkness/Darkness: PickOne
+*OrderDependency: 50 AnySetup *Darkness
+*DefaultDarkness: 8
+*Darkness 0/0 (lightest): ""
+*Darkness 2/2: ""
+*Darkness 4/4: ""
+*Darkness 6/6: ""
+*Darkness 8/8 (default): ""
+*Darkness 10/10: ""
+*Darkness 12/12: ""
+*Darkness 14/14: ""
+*Darkness 15/15 (darkest): ""
+*CloseUI: *Darkness
+
+*OpenUI *PrintMode/Print Mode: PickOne
+*OrderDependency: 60 AnySetup *PrintMode
+*DefaultPrintMode: 5
+*PrintMode 5/Default — sharp (text & barcodes): ""
+*PrintMode 0/None (threshold): ""
+*PrintMode 2/Diffusion: ""
+*PrintMode 3/Gathering (clustered dots): ""
+*PrintMode 4/Error Diffusion: ""
+*CloseUI: *PrintMode
+
+*OpenUI *Horizontal/Horizontal offset (dots): PickOne
+*OrderDependency: 70 AnySetup *Horizontal
+*DefaultHorizontal: 0
+*Horizontal 0/0: ""
+*Horizontal 8/8: ""
+*Horizontal 16/16: ""
+*Horizontal 24/24: ""
+*CloseUI: *Horizontal
+
+*OpenUI *Vertical/Vertical offset (dots): PickOne
+*OrderDependency: 71 AnySetup *Vertical
+*DefaultVertical: 0
+*Vertical 0/0: ""
+*Vertical 8/8: ""
+*Vertical 16/16: ""
+*Vertical 24/24: ""
+*CloseUI: *Vertical
